@@ -256,16 +256,48 @@
 	const importInput = document.getElementById('importInput');
 
 	exportBtn.addEventListener('click', () => {
-		const data = getProducts();
-		const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-		const url = URL.createObjectURL(blob);
-		const a = document.createElement('a');
-		a.href = url;
-		a.download = 'nuvia-products.json';
-		document.body.appendChild(a);
-		a.click();
-		a.remove();
-		URL.revokeObjectURL(url);
+		// Export all three files for GitHub
+		const products = getProducts();
+		const categories = getCategories();
+		const hero = getHero();
+		
+		// Download products.json
+		const blob1 = new Blob([JSON.stringify(products, null, 2)], { type: 'application/json' });
+		const url1 = URL.createObjectURL(blob1);
+		const a1 = document.createElement('a');
+		a1.href = url1;
+		a1.download = 'products.json';
+		document.body.appendChild(a1);
+		a1.click();
+		a1.remove();
+		URL.revokeObjectURL(url1);
+		
+		// Download categories.json (with small delay)
+		setTimeout(() => {
+			const blob2 = new Blob([JSON.stringify(categories, null, 2)], { type: 'application/json' });
+			const url2 = URL.createObjectURL(blob2);
+			const a2 = document.createElement('a');
+			a2.href = url2;
+			a2.download = 'categories.json';
+			document.body.appendChild(a2);
+			a2.click();
+			a2.remove();
+			URL.revokeObjectURL(url2);
+		}, 300);
+		
+		// Download hero.json (with delay)
+		setTimeout(() => {
+			const blob3 = new Blob([JSON.stringify(hero, null, 2)], { type: 'application/json' });
+			const url3 = URL.createObjectURL(blob3);
+			const a3 = document.createElement('a');
+			a3.href = url3;
+			a3.download = 'hero.json';
+			document.body.appendChild(a3);
+			a3.click();
+			a3.remove();
+			URL.revokeObjectURL(url3);
+			alert('3 dosya indirildi: products.json, categories.json, hero.json\n\nGitHub\'a yüklemek için:\n1. Repo\'da "data" klasörü oluştur\n2. Bu 3 dosyayı "data/" klasörüne yükle\n3. Commit ve push yap');
+		}, 600);
 	});
 	importInput.addEventListener('change', async () => {
 		const file = importInput.files && importInput.files[0];
